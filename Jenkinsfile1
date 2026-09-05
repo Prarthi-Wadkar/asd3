@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t flask-jenkins-app .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                bat 'docker stop flask-jenkins-app || exit /b 0'
+                bat 'docker rm flask-jenkins-app || exit /b 0'
+                bat 'docker run -d --name flask-jenkins-app -p 5000:5000 flask-jenkins-app'
+            }
+        }
+
+    }
+}
